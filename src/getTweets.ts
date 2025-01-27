@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const TWEET_MAX_TIME_MS = 60 * 60 * 1000; // 1 hour
+const TWEET_MAX_TIME_MS = 60 * 60 * 1000;
 
 interface Tweet {
     contents: string;
@@ -9,7 +9,7 @@ interface Tweet {
 }
 
 
-export async function getTweets(userName: string) {
+export async function getTweets(userName: string): Promise<Tweet[]> {
 
     let config = {
         method: 'get',
@@ -21,7 +21,7 @@ export async function getTweets(userName: string) {
         }
     };
   
-    const response = await axios.request(config)
+    const response = await axios.request(config) //responce.data is the data we need
     const timelineResponse = response.data.data.user_result.result.timeline_response.timeline.instructions.filter((x: any) => x.__typename === "TimelineAddEntries");
 
     const tweets: Tweet[] = [];
@@ -35,10 +35,20 @@ export async function getTweets(userName: string) {
         } catch(e) {
 
         }
-        
+    });
+  
+   
+    console.log("Current Time (ms):", Date.now());
+    console.log("Threshold Time (ms):", Date.now() - TWEET_MAX_TIME_MS);
+    
+    const validTweets = tweets.filter(tweet => {
+      const tweetTime = new Date(tweet.createdAt).getTime();
+      console.log("Tweet Time:", tweetTime);
+      const thresholdTime = Date.now() - TWEET_MAX_TIME_MS;
+      console.log("Threshold Time:", thresholdTime);
+      return tweetTime > Date.now() - TWEET_MAX_TIME_MS;
     });
     
-    // console.log("==>", new Date(tweets[0].createdAt).getTime(), Date.now())
-   
-    return tweets;
+    console.log("Valid Tweets:", validTweets);
+    return validTweets;
 }
