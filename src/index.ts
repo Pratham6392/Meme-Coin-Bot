@@ -3,9 +3,6 @@ import {getTweets} from './getTweets'
 require('dotenv').config()
 import {getTokenFromLLM} from "./get-token-fromLLM"
 import {LAMPORTS_PER_SOL} from '@solana/web3.js'
-// import swapToken from "./swapToken"
-
-import OpenAI from 'openai'
 import {swapTokens} from "./swapToken"
 
 
@@ -22,15 +19,22 @@ export async function main(username: string){
        
     }
 
-
-
-   
-   
-
-     
-
-
 }
 
 
-main("elonmusk")
+function getUsername() {
+  
+    const username = prompt("Please enter your username:");
+  
+  
+    //This is the twitter Username of the person we want to check.
+    //So this should be the username of the person who is tweeting about the token.
+    
+    if (username && username.trim()) {
+      main(username.trim()); 
+    } else {
+      console.log("Invalid input. Please try again.");
+    }
+  }
+
+  getUsername();
