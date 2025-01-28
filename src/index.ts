@@ -17,7 +17,7 @@ export async function main(username: string){
     for(const tweet of newTweets){
         const tokenAddress= await getTokenFromLLM(tweet.contents)
         console.log(tokenAddress)
-        swapToken(tokenAddress, SOL_AMOUNT)
+        // swapToken(tokenAddress, SOL_AMOUNT)
     }
 
 

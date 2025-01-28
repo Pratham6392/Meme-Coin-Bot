@@ -14,7 +14,18 @@ const slippage = 5;
 
 export async function swapToken(tokenAddress: string , amount: number){
    
+    const { data } = await axios.get<{
+        id: string
+        success: boolean
+        data: { default: { vh: number; h: number; m: number } }
+      }>(`${API_URLS.BASE_HOST}${API_URLS.PRIORITY_FEE}`);
 
+    const { data: swapResponse } = await axios.get(
+        `${
+          API_URLS.SWAP_HOST
+        }/compute/swap-base-in?inputMint=${NATIVE_MINT}&outputMint=${tokenAddress}&amount=${amount}&slippageBps=${
+          slippage * 100}&txVersion=V0`
+    );
 
 
 }
